@@ -1,5 +1,8 @@
 # WebInterface-Wifi
 
+### THIS IS NOT SECURE AND SHOULD ONLY BE USED ON PRIVATE, TRUSTED WIFI NETWORKS
+### DO NOT INSTALL IF YOU EVER CONNECT TO PUBLIC WIFI
+
 This program will make the web interface available on wifi so long as the web interface is accessible internally.
 
 You will type the following commands after ssh'ing into your ReMarkable Tablet.
@@ -14,7 +17,7 @@ You will type the following commands after ssh'ing into your ReMarkable Tablet.
 
 ## Use
 
-webinterface-wifi will already be installed and running on installation! 
+webinterface-wifi will already be running on installation! 
 
 To view the web interface, find the remarkable's wifi ip address and type it in the browser.
 - Ex : http://10.0.0.10/ 
