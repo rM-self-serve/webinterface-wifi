@@ -21,7 +21,7 @@ webinterface-wifi will already be running on installation!
 To view the web interface, find the remarkable's wifi ip address and type it in the browser.
 - Ex : http://10.0.0.10/ 
 
-To change the port on the wifi interface, run 
+If you need change the port on the wifi interface, run 
 
 - `webinterface-wifi --set-port 7777`
 
