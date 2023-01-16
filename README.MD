@@ -1,6 +1,6 @@
 # WebInterface-Wifi
 
-This program will make the web interface available on wifi.
+This program will make the web interface available on wifi so long as the web interface is accessible internally.
 
 ## Install
 
