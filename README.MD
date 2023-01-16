@@ -2,6 +2,8 @@
 
 This program will make the web interface available on wifi so long as the web interface is accessible internally.
 
+You will type the following commands after ssh'ing into your ReMarkable Tablet.
+
 ## Install
 
 `wget -O - https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/install-webint-wf.sh | sh`
@@ -33,7 +35,7 @@ Do not run program on boot:
 
 ## Manual install
 
-You will need docker/podman, cargo, and the cargo crate named cross. There are surely other ways to cross compile for armv7-unknown-linux-gnueabihf.
+You will need docker/podman, cargo, and the cargo crate named cross. There are surely other ways to cross compile for armv7-unknown-linux-gnueabihf as well.
 
 `cross build --target armv7-unknown-linux-gnueabihf --release`
 
