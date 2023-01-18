@@ -8,22 +8,28 @@ You will type the following commands after ssh'ing into your ReMarkable Tablet.
 
 ## Install
 
-`wget -O - https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/install-webint-wf.sh | sh`
+`wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/install-webint-wf.sh && bash install-webint-wf.sh`
 
 ## Remove
 
-`wget -O - https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/remove-webint-wf.sh | sh`
+`wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/remove-webint-wf.sh && bash remove-webint-wf.sh`
 
 ## Use
 
-webinterface-wifi will already be running on installation! 
+To start the application, run:
+
+- `systemctl start webinterface-wifi`
+
+To automatically start the application after restarting, run:
+
+- `systemctl enable webinterface-wifi`
 
 To view the web interface, find the remarkable's wifi ip address and type it in the browser.
 - Ex : http://10.0.0.10/ 
 
 If you need change the port on the wifi interface, run 
 
-- `webinterface-wifi --set-port 7777`
+- `webinterface-wifi --set-port ####`
 
 ## Stop
 
