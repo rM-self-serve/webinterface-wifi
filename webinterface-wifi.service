@@ -4,7 +4,7 @@ Description=View the web interface over wifi
 [Service]
 Type=simple
 Restart=always
-ExecStart=/usr/bin/webinterface-wifi --run 80
+ExecStart=/home/root/.local/bin/webinterface-wifi --run 80
 
 [Install]
 WantedBy=multi-user.target
