@@ -1,0 +1,10 @@
+[Unit]
+Description=View the web interface over wifi
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/home/root/.local/bin/webinterface-wifi --run 80
+
+[Install]
+WantedBy=multi-user.target
