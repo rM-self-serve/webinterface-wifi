@@ -27,7 +27,7 @@ case :$PATH: in
 esac
 
 [[ -f $binfile ]] && rm $binfile
-wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v1.0.1/webinterface-wifi \
+wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v1.0.2/webinterface-wifi \
     -P $localbin
 
 chmod +x $localbin/webinterface-wifi
@@ -39,7 +39,7 @@ wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/we
 systemctl daemon-reload
 
 printf '\nFinished installing webinterface-wifi, removing install script\n\n'
-printf 'To start the application, run:\n'
+printf 'Run the following command to use webinterface-wifi\n'
 printf 'systemctl start webinterface-wifi\n\n'
 printf 'To automatically start the application after restarting, run:\n'
 printf 'systemctl enable webinterface-wifi\n\n'

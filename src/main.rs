@@ -1,5 +1,5 @@
 use clap::{App as ClapApp, AppSettings, Arg};
-use constants::APP_NAME;
+use constants::{APP_NAME, CLI_ABOUT};
 mod constants;
 mod net_interface;
 mod server;
@@ -8,17 +8,18 @@ mod set_port;
 fn main() {
     let matches = ClapApp::new(APP_NAME)
         .setting(AppSettings::ArgRequiredElseHelp)
+        .about(CLI_ABOUT)
         .arg(
             Arg::new("run")
                 .long("run")
-                .help("Starts webinterface-wifi in shell with specified port")
+                .help("Starts webinterface-wifi in current shell with specified port")
                 .takes_value(true)
                 .value_name("port"),
         )
         .arg(
             Arg::new("set-port")
                 .long("set-port")
-                .help("Configure the default port to expose on the wifi interface")
+                .help("Set the port webinterface-wifi will run on")
                 .takes_value(true)
                 .value_name("port"),
         )

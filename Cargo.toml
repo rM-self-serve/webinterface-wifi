@@ -1,14 +1,13 @@
 [package]
 name = "webinterface-wifi"
-version = "0.1.0"
+version = "1.0.2"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 hyper-reverse-proxy = "0.5.1"
-hyper = { version = "0.14.23", features = ["full"] }
-tokio = { version = "1.24.1", features = ["full"] }
+hyper = "0.14.23"
+tokio = { version = "1.24.1", features = ["macros", "rt-multi-thread"] }
 local-ip-address = "0.5.0"
 clap = "3.0"
 regex = "1.7.1"
