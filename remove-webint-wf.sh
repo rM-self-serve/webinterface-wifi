@@ -1,4 +1,9 @@
+pkgname='webinterface-wifi'
 removefile='./remove-webint-wf.sh'
+localbin='/home/root/.local/bin'
+binfile="${localbin}/${pkgname}"
+servicefile="/lib/systemd/system/${pkgname}.service"
+
 
 printf "\nRemove webinterface-wifi\n"
 echo "This will not remove the /home/root/.local/bin directory nor the path in .bashrc"
@@ -15,11 +20,18 @@ case "$response" in
     ;;
 esac
 
-rm /home/root/.local/bin/webinterface-wifi
+[[ -f $binfile ]] && rm $binfile
 
-systemctl disable webinterface-wifi --now
+if systemctl --quiet is-active "$pkgname" 2> /dev/null; then
+    echo "Stopping $pkgname"
+    systemctl stop "$pkgname"
+fi
+if systemctl --quiet is-enabled "$pkgname" 2> /dev/null; then
+    echo "Disabling $pkgname"
+    systemctl disable "$pkgname"
+fi
 
-rm /lib/systemd/system/webinterface-wifi.service
+[[ -f $servicefile ]] && rm $servicefile
 
 [[ -f $removefile ]] && rm $removefile
 
