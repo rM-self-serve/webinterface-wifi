@@ -33,7 +33,7 @@ case :$PATH: in
 esac
 
 function sha_fail() {
-	echo "sha256sum did not pass, error downloading webinterface_wifi"
+	echo "sha256sum did not pass, error downloading webinterface-wifi"
 	echo "Exiting installer and removing installed files"
 	[[ -f $binfile ]] && rm $binfile
 	[[ -f $installfile ]] && rm $installfile
@@ -49,7 +49,7 @@ if ! sha256sum -c <(echo "$webinterface_wifi_sha256sum  $binfile") >/dev/null 2>
 	sha_fail
 fi
 
-chmod +x $localbin/webinterface-wifi
+chmod +x $binfile
 
 [[ -f $servicefile ]] && rm $servicefile
 wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/webinterface-wifi.service \
