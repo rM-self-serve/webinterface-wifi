@@ -1,22 +1,27 @@
 # WebInterface-Wifi
 
-> :warning: **THIS IS NOT SECURE AND SHOULD ONLY BE USED ON PRIVATE, TRUSTED WIFI NETWORKS. ANYONE ON THE SAME WIFI NETWORK CAN UPLOAD/DOWNLOAD FILES TO/FROM YOUR TABLET.** :warning:
+> :warning: **This is not secure and should only be used on private, trusted wifi networks. Anyone on the same wifi network can upload/download files to/from your tablet.** :warning:
 
-This program will make the web interface available on wifi, so long as the web interface is accessible internally.
+This program will make the web interface available on wifi, so long as the web interface is internally accessible.
 
 #### Limitiations 
 
-Without an additional program, 'accessible internally' means the web interface will only be available over wifi while the device is plugged in and the web interface is enabled/reachable at http://10.11.99.1, while being connected to wifi.
+Without additional programs, 'Internally accessible' means the web interface will only be available over wifi while the device is plugged in and the web interface is enabled/reachable at 10.11.99.1, of course all while being connected to wifi.
 
-## Usage
+To get around these limitations, you can use these programs to start the web interface and ensure it is internally accessible.
 
-Type the following commands after ssh'ing into your ReMarkable Tablet.
+https://github.com/rM-self-serve/webinterface-onboot
 
-### Installation/Removal
+https://github.com/rM-self-serve/webinterface-persist-ip
 
-**It is reccomended to install via the [toltec package manager](https://toltec-dev.org/).** 
 
-#### With toltec
+### Type the following commands after ssh'ing into the ReMarkable Tablet
+
+## Installation/Removal
+
+**It is recommended to install via the [toltec package manager](https://toltec-dev.org/).** 
+
+### With toltec
 
 ```
 opkg update
@@ -24,43 +29,34 @@ opkg install webinterface-wifi
 opkg remove webinterface-wifi
 ```
 
-#### No toltec
+### No toltec
 
-Install
+#### Install
 
-- `wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/install-webint-wf.sh && bash install-webint-wf.sh`
+`$ wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/install-webint-wf.sh && bash install-webint-wf.sh`
 
-Remove
+#### Remove
 
-- `wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/remove-webint-wf.sh && bash remove-webint-wf.sh`
+`$ wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/remove-webint-wf.sh && bash remove-webint-wf.sh`
 
-### Use
+## Usage
 
-To start the application, run:
+### To use webinterface-wifi, run:
 
-- `systemctl start webinterface-wifi`
-
-To automatically start the application after restarting, run:
-
-- `systemctl enable webinterface-wifi`
+`$ systemctl enable --now webinterface-wifi`
 
 To view the web interface, type the remarkable's wifi ip address in the browser. It can be found in the copyrights and licenses tab in the settings.
 
 - Ex : http://10.0.0.10/ 
 
-If you need change the port on the wifi interface, run 
+### To change the port on the wifi interface, run 
 
-- `webinterface-wifi --set-port ####`
+`$ webinterface-wifi --set-port ####`
 
-### Stop
 
-Stop program:
+### To stop using webinterface-wifi, run:
 
-- `systemctl stop webinterface-wifi`
-
-Do not run program on boot: 
-
-- `systemctl disable webinterface-wifi`
+`$ systemctl disable --now webinterface-wifi`
 
 ## Manual install
 
