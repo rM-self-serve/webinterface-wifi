@@ -4,18 +4,25 @@
 
 This program will make the web interface available on wifi, so long as the web interface is internally accessible.
 
-#### Limitiations 
+### Limitiations 
 
 Without additional programs, 'Internally accessible' means the web interface will only be available over wifi while the device is plugged in and the web interface is enabled/reachable at 10.11.99.1, of course all while being connected to wifi.
 
 To get around these limitations, you can use these programs to start the web interface and ensure it is internally accessible.
 
-https://github.com/rM-self-serve/webinterface-onboot
+- https://github.com/rM-self-serve/webinterface-onboot
 
-https://github.com/rM-self-serve/webinterface-persist-ip
+- https://github.com/rM-self-serve/webinterface-persist-ip
 
+### Mobile Use
 
-### Type the following commands after ssh'ing into the ReMarkable Tablet
+Drag and drop does not work on mobile, though it is very simple to add an upload button to circumnavigate this.
+
+- https://github.com/rM-self-serve/upload_button
+
+---
+
+#### Type the following commands after ssh'ing into the ReMarkable Tablet
 
 ## Installation/Removal
 
