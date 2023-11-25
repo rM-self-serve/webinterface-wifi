@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
 
-webinterface_wifi_sha256sum='dd66455dab70ad13f5258a8fa1e624c90e691fb96cf3fac39821f09d83ef5353'
-service_file_sha256sum='82e19e82fb860c20e15d5b50fde3e06fe5ffe648f3c5f9aaf3b02edc4b81e196'
+webinterface_wifi_sha256sum='eb2f52742225e5dfa9d44edf4e9a6e90c56affb0c59efc2ddf4a51931c245b55'
+service_file_sha256sum='ba0472927c1ed0f7c201973c32ebcb3dcb6a7186db9a0e9a1466d3308c9f6621'
 
 installfile='./install-webint-wf.sh'
 localbin='/home/root/.local/bin'
 binfile="${localbin}/webinterface-wifi"
+aliasfile="${localbin}/webint-wifi"
 servicefile='/lib/systemd/system/webinterface-wifi.service'
+configdir='/home/root/.config/webinterface-wifi'
+configfile="${configdir}/config.toml"
+sharedir='/home/root/.local/share/webinterface-wifi'
+ssldir="${sharedir}/ssl"
+authdir="${sharedir}/auth"
+assetsdir="${sharedir}/assets"
 
 printf "\nwebinterface-wifi\n"
 printf "View the web interface over wifi\n"
@@ -42,7 +49,7 @@ function sha_fail() {
 }
 
 [[ -f $binfile ]] && rm $binfile
-wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v1.0.2/webinterface-wifi \
+wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0/webinterface-wifi \
 	-P $localbin
 
 if ! sha256sum -c <(echo "$webinterface_wifi_sha256sum  $binfile") >/dev/null 2>&1; then
@@ -50,6 +57,7 @@ if ! sha256sum -c <(echo "$webinterface_wifi_sha256sum  $binfile") >/dev/null 2>
 fi
 
 chmod +x $binfile
+ln -s $binfile $aliasfile
 
 [[ -f $servicefile ]] && rm $servicefile
 wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/webinterface-wifi.service \
@@ -58,6 +66,18 @@ wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/we
 if ! sha256sum -c <(echo "$service_file_sha256sum  $servicefile") >/dev/null 2>&1; then
 	sha_fail
 fi
+
+mkdir -p $configdir
+if ! [ -f $configfile ]; then
+	wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/config/config.default.toml \
+		-O $configfile
+fi
+
+mkdir -p $ssldir
+mkdir -p $authdir
+mkdir -p $assetsdir
+wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/assets/favicon.ico \
+	-P $assetsdir
 
 systemctl daemon-reload
 

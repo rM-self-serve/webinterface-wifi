@@ -1,0 +1,25 @@
+# Login file and SSL Certs in non-default location
+
+[conf]
+network_filter="off"
+login_path="/etc/auth/login.pass"
+ssl_cert_path="/etc/ssl/ssl_cert.pem"
+ssl_priv_path="/etc/ssl/ssl_priv.rsa"
+
+[networks.home]
+router_ssid="HomeNet"
+ssl=true
+login_enforced=true
+listen_ip="auto"
+listen_port=443
+http_redirect_port=80
+
+[allowlist]
+networks=["home"]
+
+
+# Running on a wifi enabled desktop for example
+[device]
+webint_port=8080
+webint_interface="eth0"
+wifi_interface="wlan1" 

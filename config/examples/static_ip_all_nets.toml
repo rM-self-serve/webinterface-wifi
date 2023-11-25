@@ -1,0 +1,10 @@
+# Simple Static Ip for Every Network
+
+[conf]
+network_filter="off"
+
+[undefined_networks]
+ssl=false
+login_enforced=false
+listen_ip="10.68.100.94"
+listen_port=80
