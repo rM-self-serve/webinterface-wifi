@@ -51,7 +51,7 @@ function sha_fail() {
 
 [[ -f $binfile ]] && rm $binfile
 wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0/webinterface-wifi \
-	-O $localbin
+	-P $localbin
 
 if ! sha256sum -c <(echo "$webinterface_wifi_sha256sum  $binfile") >/dev/null 2>&1; then
 	sha_fail
