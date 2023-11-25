@@ -77,18 +77,18 @@ Or the paths can be specified in config.toml:
 [conf]
 ssl_cert_path="/etc/ssl/ssl_cert.pem"
 ssl_priv_path="/etc/ssl/ssl_priv.rsa"
-...
+# ...
 ```
 
 Then enable ssl in each network:
 ```toml
 [networks.arbitrary_name]
 ssl=true
-...
+# ...
 
 [undefined_networks]
 ssl=true
-...
+# ...
 ```
 > An SSL keypair will be included in this repository for testing purposes. This should not be considered secure as someone determined could use the provided private key to decrypt your network traffic. These will need to be downloaded separately. 
 
@@ -110,7 +110,7 @@ To specify in config.toml:
 ```toml
 [conf]
 login_path="/etc/auth/login.pass"
-...
+# ...
 ```
 > The password is not stored in plaintext.
 
@@ -156,7 +156,7 @@ network_filter="allowlist"
 
 [networks.home]
 router_ssid="Home Wifi Name"
-...
+# ...
 
 [allowlist]
 networks=[ "home" ]
@@ -175,7 +175,7 @@ router_ssid="Airport Wifi Name"
 networks=[ "airport" ]
 
 [undefined_networks]
-...
+# ...
 ```
 
 ## Editing the Config
@@ -238,8 +238,10 @@ http_redirect_port=80
 ```
 
 ## Config Information
-For more information on the config see the spec at TODO and examples at TODO.
+For more information on the config see the spec and examples in the config folder.
 
+## Compatibility
+The only incompatibility currently found is using a login on Safari.
 
 ## Manual install
 
@@ -253,5 +255,5 @@ Then copy the binary 'target/armv7-unknown-linux-gnueabihf/release/webinterface-
 
 This program will start a reverse proxy on the wifi interface on the port specified. The proxy will start/stop based on if usb0 interface has the ip 10.11.99.1 and the wlan0 interface has an ip address. It will automatically be available whenever you connect to a new wifi network. 
 
-![mobile_web_ui](https://user-images.githubusercontent.com/122753594/213054617-a4f68efe-08a5-4c45-a866-6103e3e144fd.jpg)
+![mobile_web_ui](https://github.com/rM-self-serve/webinterface-wifi/assets/122753594/981f3367-653e-40db-b389-703a046a4362)
 
