@@ -14,6 +14,7 @@ sharedir='/home/root/.local/share/webinterface-wifi'
 ssldir="${sharedir}/ssl"
 authdir="${sharedir}/auth"
 assetsdir="${sharedir}/assets"
+faviconfile="${assetsdir}/favicon.ico"
 
 printf "\nwebinterface-wifi\n"
 printf "View the web interface over wifi\n"
@@ -50,7 +51,7 @@ function sha_fail() {
 
 [[ -f $binfile ]] && rm $binfile
 wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0/webinterface-wifi \
-	-P $localbin
+	-O $localbin
 
 if ! sha256sum -c <(echo "$webinterface_wifi_sha256sum  $binfile") >/dev/null 2>&1; then
 	sha_fail
@@ -76,6 +77,8 @@ fi
 mkdir -p $ssldir
 mkdir -p $authdir
 mkdir -p $assetsdir
+
+[[ -f $faviconfile ]] && rm $faviconfile
 wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/assets/favicon.ico \
 	-P $assetsdir
 
