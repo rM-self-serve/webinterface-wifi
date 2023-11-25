@@ -1,1 +1,4 @@
 /target
+.vscode/
+/test
+webint-wifi

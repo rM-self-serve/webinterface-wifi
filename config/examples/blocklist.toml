@@ -1,0 +1,26 @@
+# Run on all networks, defined and undefined, excluding "work" and "airport"
+
+[conf]
+network_filter="blocklist"
+
+[networks.home]
+router_ssid="HomeNet"
+ssl=false
+login_enforced=false
+listen_ip="auto"
+listen_port=80
+
+[networks.work]
+router_ssid="WorkNet"
+
+[networks.airport]
+router_ssid="AirportNet"
+
+[undefined_networks]
+ssl=true
+login_enforced=true
+listen_ip="auto"
+listen_port=4433
+
+[blocklist]
+networks=["work", "airport"]

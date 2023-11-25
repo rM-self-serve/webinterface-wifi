@@ -1,0 +1,10 @@
+# WebInterface-Wifi Config
+
+[conf]
+network_filter="off"
+
+[undefined_networks]
+ssl=false
+login_enforced=false
+listen_port=80
+listen_ip="auto"

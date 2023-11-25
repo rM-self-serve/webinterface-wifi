@@ -1,0 +1,97 @@
+# WebInterface-Wifi Config Specification
+
+###############################################################################
+
+# Required
+[conf]
+# Possible values
+
+# network_filter: str = <"blocklist" | "allowlist" | "off">;
+
+# login_path: str = "path to login file";
+# - only applicable if [networks.xxx].login_enforced == true
+# - default: /home/root/.local/share/webinterface-wifi/auth/login.pass
+# ssl_cert_path: str = "path to ssl certificate/public key"
+# - only applicable if [networks.xxx].ssl == true
+# - default: /home/root/.local/share/webinterface-wifi/ssl/ssl_cert.pem
+# ssl_priv_path: str = "path to ssl private key";
+# - only applicable if [networks.xxx].ssl == true
+# - default: /home/root/.local/share/webinterface-wifi/ssl/ssl_priv.rsa
+
+# Advanced/Optinal
+# daemon_port: int = <port #>;
+#  - the daemon will create a tcp server on a default port, 6396, for communication
+#  - with the command line application. The only time to use this option is when
+#  - running a separate instance of webinterface-wifi or if there is a port conflict.
+
+###############################################################################
+
+# Optional
+# List of defined networks
+[network.arbitrary_network_label]
+# Possible values
+
+# router_ssid: str = "router's ssid";
+
+# Following values only required/applicable if network is not in blocklist
+
+# ssl: bool = <true | false>;
+# login_enforced: bool = <true | false>;
+# listen_ip: str = <"auto" | "ip address">; the ip address to run on
+# - if listen_ip == "auto", find the ip address of [device].wifi_interface
+# - a static ipv4 address is also valid
+# listen_port: int = <port #>; the port to run on
+# http_redirect_port: int = <port #>; the http port to redirect to https
+# - omitting this line will not run the redirect server
+# - only applicable if ssl == true
+
+###############################################################################
+
+# Only required if [conf].network_filter == ("off" | "blocklist")
+# All networks not defined
+[undefined_networks]
+# Possible values
+
+# ssl: bool = <true | false>;
+# login_enforced: bool = <true | false>;
+# listen_ip: str = ("auto" | "<ip address>"); the ip address to run on
+# - if listen_ip == "auto", find the ip address of [device].wifi_interface
+# - a static ip address is also valid
+# listen_port: int = <port #>; the port to run on
+# http_redirect_port: int = <port #>; the http port to redirect to https
+# - omitting this line will not run the redirect server
+# - only applicable if ssl == true
+
+###############################################################################
+
+# Only required if [conf].network_filter == "allowlist"
+# Only start webinterface-wifi on these networks
+# Mutually exclusive with blocklist
+[allowlist]
+# Possible values
+
+# networks: list[str] = ["network label"]
+
+###############################################################################
+
+# Only required if [conf].network_filter == "blocklist"
+# Do not start webinterface-wifi on these networks
+# Mutually exclusive with allowlist
+[blocklist]
+# Possible values
+
+# networks: list[str] = ["network label"]
+
+###############################################################################
+
+# Advanced/Optional
+[device]
+# Possible values
+
+# webint_port: int = <port #>; default 80
+# - the port the webinterface is running on
+# webint_interface: str = "webinterface's network interface"; default "usb0"
+# wifi_interface: str = "device's wifi interface"; default "wlan0" 
+
+###############################################################################
+

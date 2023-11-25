@@ -1,0 +1,22 @@
+# Only run on "home" and "work" networks
+
+[conf]
+network_filter="allowlist"
+
+[networks.home]
+router_ssid="HomeNet"
+ssl=false
+login_enforced=false
+listen_ip="auto"
+listen_port=80
+
+[networks.work]
+router_ssid="WorkNet"
+ssl=true
+login_enforced=true
+listen_ip="10.68.100.94"
+listen_port=443
+http_redirect_port=80
+
+[allowlist]
+networks=["home", "work"]
