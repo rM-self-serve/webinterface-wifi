@@ -32,9 +32,9 @@ pub fn device(device_opt: Option<DeviceOPT>) -> Device {
         Some(val) => val,
         None => default_device.webint_port,
     };
-    let webint_interface = match device_cont_opt.webint_interface {
+    let webint_ip = match device_cont_opt.webint_ip {
         Some(val) => val,
-        None => default_device.webint_interface,
+        None => default_device.webint_ip,
     };
     let wifi_interface = match device_cont_opt.wifi_interface {
         Some(val) => val,
@@ -43,7 +43,7 @@ pub fn device(device_opt: Option<DeviceOPT>) -> Device {
 
     Device {
         webint_port: webint_port,
-        webint_interface: webint_interface,
+        webint_ip: webint_ip,
         wifi_interface: wifi_interface,
     }
 }

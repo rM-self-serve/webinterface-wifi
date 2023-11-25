@@ -75,8 +75,8 @@ pub fn device(deviceopt_opt: &Option<DeviceOPT>) -> bool {
         info!("Missing 'webint_port' in [device] field, assuming default.");
     }
 
-    if device_opt.webint_interface.is_none() {
-        info!("Missing 'webint_interface' in [device] field, assuming default.");
+    if device_opt.webint_ip.is_none() {
+        info!("Missing 'webint_ip' in [device] field, assuming default.");
     }
 
     if device_opt.wifi_interface.is_none() {

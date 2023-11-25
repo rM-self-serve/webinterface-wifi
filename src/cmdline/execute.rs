@@ -12,7 +12,7 @@ use std::path::{Path, PathBuf};
 pub fn validate(config_path: &PathBuf) -> std::io::Result<()> {
     let server_config = Config::init(config_path)?;
     let wifi = &server_config.device.wifi_interface;
-    let webint = &server_config.device.webint_interface;
+    let webint = &server_config.device.webint_ip;
     let sep = "----".yellow();
     println!("{}{}{}", sep, "MOCK RUN".yellow(), sep);
     let net_info_opt = match netinfo::structs::NetInfo::from_sync(wifi, webint, true) {

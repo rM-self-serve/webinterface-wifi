@@ -1,10 +1,10 @@
 // Since almost every field of the config can be omitted,
-// parse everything as Options 
+// parse everything as Options
 
-use crate::constants::{DEF_WEBINT_INT, DEF_WEBINT_PORT, DEF_WIFI_INT};
+use crate::constants::{DEF_WEBINT_IP, DEF_WEBINT_PORT, DEF_WIFI_INT};
+use colored::Colorize;
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, fmt};
-use colored::Colorize;
 
 macro_rules! opt_struct_convert {
     // make every field in the struct an Option<type>
@@ -118,7 +118,7 @@ opt_struct_convert! {
 opt_struct_add! {
     Device {
         Require: webint_port: u16,
-        Require: webint_interface: String,
+        Require: webint_ip: String,
         Require: wifi_interface: String,
     }, DeviceOPT
 }
@@ -127,7 +127,7 @@ impl Default for Device {
     fn default() -> Self {
         Device {
             webint_port: DEF_WEBINT_PORT,
-            webint_interface: DEF_WEBINT_INT.to_string(),
+            webint_ip: DEF_WEBINT_IP.to_string(),
             wifi_interface: DEF_WIFI_INT.to_string(),
         }
     }

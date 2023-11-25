@@ -10,7 +10,7 @@ use tokio::time::sleep;
 
 #[derive(Debug, Clone, Hash)]
 pub struct NetInfo {
-    pub webint_ntrfc: IpAddr,
+    pub webint_ip: IpAddr,
     pub wifi_ntrfc: IpAddr,
     pub ssid: String,
 }
@@ -19,7 +19,7 @@ impl NetInfo {
     pub async fn from_config(config: &Config) -> std::io::Result<Option<NetInfo>> {
         let device = config.device.to_owned();
         let info = tokio::spawn(async move {
-            NetInfo::from_sync(&device.wifi_interface, &device.webint_interface, false)
+            NetInfo::from_sync(&device.wifi_interface, &device.webint_ip, false)
         });
 
         tokio::select! {
@@ -31,10 +31,10 @@ impl NetInfo {
 
     pub fn from_sync(
         wifi_interface: &str,
-        webint_interface: &str,
+        webint_ip_addr: &str,
         is_cli: bool,
     ) -> std::io::Result<Option<NetInfo>> {
-        let mut webint_ntrfc: Option<IpAddr> = None;
+        let mut webint_ip: Option<IpAddr> = None;
         let mut wifi_ntrfc: Option<IpAddr> = None;
 
         let network_interfaces =
@@ -45,10 +45,8 @@ impl NetInfo {
                     wifi_ntrfc = Some(ip)
                 }
             }
-            if &name == webint_interface {
-                if ip.is_ipv4() {
-                    webint_ntrfc = Some(ip)
-                }
+            if ip.to_string() == webint_ip_addr {
+                webint_ip = Some(ip)
             }
         }
 
@@ -73,21 +71,17 @@ impl NetInfo {
                 success = false;
             }
         }
-        match webint_ntrfc.as_ref() {
+        match webint_ip.as_ref() {
             Some(val) => print_or_dbug(
                 &format!(
-                    "webint interface: {} ip: {}",
-                    webint_interface.bright_blue(),
+                    "webint ip exists: {}",
                     val.to_string().bright_blue()
                 ),
                 is_cli,
             ),
             None => {
                 print_or_dbug(
-                    &format!(
-                        "Could not find ip of webint interface: {}",
-                        webint_interface.red()
-                    ),
+                    &format!("Could not find webint ip: {}", webint_ip_addr.red()),
                     is_cli,
                 );
                 success = false;
@@ -106,7 +100,7 @@ impl NetInfo {
         }
 
         Ok(Some(NetInfo {
-            webint_ntrfc: webint_ntrfc.unwrap(),
+            webint_ip: webint_ip.unwrap(),
             wifi_ntrfc: wifi_ntrfc.unwrap(),
             ssid: ssid.to_owned(),
         }))

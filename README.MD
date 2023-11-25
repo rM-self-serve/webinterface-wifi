@@ -213,7 +213,7 @@ $ webinterface-wifi validate
 ```
 $ webinterface-wifi net-info
 wifi interface: wlan0 ip: 192.168.1.93
-webint interface: usb0 ip: 10.11.99.1
+webint ip exists: 10.11.99.1
 router ssid: Home Wifi Name
 ```
 
@@ -253,7 +253,7 @@ Then copy the binary 'target/armv7-unknown-linux-gnueabihf/release/webinterface-
 
 ## How Does it Work?
 
-This program will start a reverse proxy on the wifi interface on the port specified. The proxy will start/stop based on if usb0 interface has the ip 10.11.99.1 and the wlan0 interface has an ip address. It will automatically be available whenever you connect to a new wifi network. 
+This program will start a reverse proxy on the wifi interface on the port specified. The proxy will start/stop based on if webinterface has the configured ip address and the wifi interface has an ip address. It will automatically be available whenever you connect to a new wifi network. 
 
 ![mobile_web_ui](https://github.com/rM-self-serve/webinterface-wifi/assets/122753594/981f3367-653e-40db-b389-703a046a4362)
 

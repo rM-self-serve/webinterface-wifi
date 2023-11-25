@@ -1,4 +1,4 @@
-use crate::constants::{CLI_ABOUT, DEF_CNFG_PATH, DEF_PASS_PATH, DEF_WEBINT_INT, DEF_WIFI_INT};
+use crate::constants::{CLI_ABOUT, DEF_CNFG_PATH, DEF_PASS_PATH, DEF_WEBINT_IP, DEF_WIFI_INT};
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 
@@ -56,7 +56,7 @@ pub enum Commands {
         /// Webint interface
         #[arg(
             long,
-            default_value=DEF_WEBINT_INT,
+            default_value=DEF_WEBINT_IP,
             value_names = ["interface"]
         )]
         webint: Option<String>,

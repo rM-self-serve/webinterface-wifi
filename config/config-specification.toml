@@ -90,7 +90,7 @@
 
 # webint_port: int = <port #>; default 80
 # - the port the webinterface is running on
-# webint_interface: str = "webinterface's network interface"; default "usb0"
+# webint_ip: str = "webinterface's ip address"; default "10.11.99.1"
 # wifi_interface: str = "device's wifi interface"; default "wlan0" 
 
 ###############################################################################

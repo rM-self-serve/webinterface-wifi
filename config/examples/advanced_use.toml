@@ -21,5 +21,5 @@ networks=["home"]
 # Running on a wifi enabled desktop for example
 [device]
 webint_port=8080
-webint_interface="eth0"
+webint_ip="10.0.0.10"
 wifi_interface="wlan1" 

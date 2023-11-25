@@ -62,7 +62,7 @@ fn spawn_server(
     let session_key = random_string::generate(16, random_string::charsets::ALPHANUMERIC);
 
     let webint_addr = utils::string2scktaddr(
-        net_info.webint_ntrfc.to_string(),
+        net_info.webint_ip.to_string(),
         &config.device.webint_port,
     )?;
 
