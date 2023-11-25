@@ -6,9 +6,10 @@ After=home.mount
 
 [Service]
 Environment=HOME=/home/root
+Environment=WEBINT_WIFI_RUN_ENV=DAEMON
 Type=simple
 Restart=on-failure
-ExecStart=/home/root/.local/bin/webinterface-wifi --run 80
+ExecStart=/home/root/.local/bin/webinterface-wifi local-exec
 
 [Install]
 WantedBy=multi-user.target
