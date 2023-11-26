@@ -38,15 +38,13 @@ $ opkg remove webinterface-wifi
 
 ### No toltec
 
-#### 
+#### Install
 
-```
-# Install
-$ wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/install-webint-wf.sh && bash install-webint-wf.sh
+```$ wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/install-webint-wf.sh && bash install-webint-wf.sh```
 
-# Remove
-$ wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/remove-webint-wf.sh && bash remove-webint-wf.sh
-```
+#### Remove
+
+```$ wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/remove-webint-wf.sh && bash remove-webint-wf.sh```
 
 ## Usage
 
@@ -182,13 +180,17 @@ networks=[ "airport" ]
 > Webinterface-Wifi needs to be explicitly reloaded when the config is edited.
 
 :warning: An invalid config will stop the daemon from running. Restart it with:
+```
+$ systemctl daemon-reload
+$ systemctl restart webinterface-wifi
+```
 
-`$ systemctl daemon-reload && systemctl restart webinterface-wifi`
-
+Open in the default config in your editor of choice, defined by the environment variable $EDITOR, or nano if not defined:
 ```
 $ webinterface-wifi edit
 ```
-Will open the default config in your editor of choice, defined by the environment variable $EDITOR, or nano if not defined. After saving the file, validation will be performed on the config where potential errors will be raised.
+
+After saving the file, validation will be performed on the config where potential errors will be raised.
 
 ```
 # Default Config Path
@@ -240,8 +242,8 @@ http_redirect_port=80
 ## Config Information
 For more information on the config see the spec and examples in the config folder.
 
-## Compatibility
-The only incompatibility currently found is using a login on Safari.
+## Incompatibilities
+- Password authentication on Safari
 
 ## Manual install
 
