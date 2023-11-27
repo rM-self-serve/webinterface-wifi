@@ -62,12 +62,18 @@ To view the web interface, type the remarkable's wifi ip address in the browser.
 
 ### SSL/Network Encryption
 Obtain an SSL certificate and the corresponding private key, a self signed cert is sufficient. These can be placed at the following paths:
+
 ```
 # Certificate default path
 /home/root/.local/share/webinterface-wifi/ssl/ssl_cert.pem
+# If installed with Toltec
+/opt/etc/webinterface-wifi/ssl/ssl_cert.pem
+
 
 # Private Key default path
 /home/root/.local/share/webinterface-wifi/ssl/ssl_priv.rsa 
+# If installed with Toltec
+/opt/etc/webinterface-wifi/ssl/ssl_priv.rsa 
 ```
 
 Or the paths can be specified in config.toml:
@@ -100,9 +106,14 @@ $ webinterface-wifi create-login
 User: myuser
 Password: 
 Retype Password: 
-Login file created at: /home/root/.local/share/webinterface-wifi/auth/login.pass
 ```
-This will create a password file at the default path so that it does not need to be specified in config.toml.
+```
+# Login file default path
+/home/root/.local/share/webinterface-wifi/auth/login.pass 
+# If installed with Toltec
+/opt/etc/webinterface-wifi/auth/login.pass 
+```
+This will create a login file at the default path so that it does not need to be specified in config.toml.
 
 To specify in config.toml:
 ```toml

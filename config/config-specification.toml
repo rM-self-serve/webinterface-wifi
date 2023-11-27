@@ -1,5 +1,8 @@
 # WebInterface-Wifi Config Specification
 
+# If installed via toltec, every instance of 
+# "/home/root/.local/share" is replaced with "/opt/etc"
+
 ###############################################################################
 
 # Required

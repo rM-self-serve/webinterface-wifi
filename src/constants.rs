@@ -1,7 +1,19 @@
-pub const DEF_CNFG_PATH: &str = "/home/root/.config/webinterface-wifi/config.toml";
-pub const DEF_PASS_PATH: &str = "/home/root/.local/share/webinterface-wifi/auth/login.pass";
-pub const DEF_SSL_CERT_PATH: &str = "/home/root/.local/share/webinterface-wifi/ssl/ssl_cert.pem";
-pub const DEF_SSL_PRIV_PATH: &str = "/home/root/.local/share/webinterface-wifi/ssl/ssl_priv.rsa";
+macro_rules! from_build_env {
+    // make a pub const from the build env var with the same name
+    ($($envname:ident$(,)?)*) => {
+        $(pub const $envname: &str = env!(stringify!($envname));)*
+    }
+}
+
+from_build_env!(
+    // these are defined in build.rs
+    DEF_PASS_PATH,
+    DEF_SSL_CERT_PATH,
+    DEF_SSL_PRIV_PATH,
+    FAVICON_PATH,
+    DEF_CNFG_PATH,
+);
+
 pub const DEF_WIFI_INT: &str = "wlan0";
 pub const DEF_WEBINT_IP: &str = "10.11.99.1";
 pub const DEF_WEBINT_PORT: u16 = 80;
@@ -17,7 +29,6 @@ pub const CMD_ENV: &str = "/usr/bin/env";
 pub const TCP_BUFFER_SIZE: usize = 4096;
 
 pub const AUTH_REALM: &str = "login";
-pub const FAVICON_PATH: &str = "/home/root/.local/share/webinterface-wifi/assets/favicon.ico";
 
 pub const SIGINT: i32 = 2;
 pub const SIGUSR1: i32 = 10;
