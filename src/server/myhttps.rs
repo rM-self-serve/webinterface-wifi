@@ -219,7 +219,8 @@ fn replace_domain_tls(req: Request<Body>, tls_port: u16) -> Result<String, Strin
     }
 
     // uri format such as "http://192.168.1.11:8080/xx/xx"
-    let Some(full_host_str) = uri.split("/").nth(1) else {
+    // seemingly unused
+    let Some(full_host_str) = uri.split("/").nth(2) else {
         let err_str = format!("Error parsing uri to full_host_str: {:#?}", uri);
         error!("{err_str}");
         return Err(err_str);
@@ -236,7 +237,7 @@ fn replace_domain_tls(req: Request<Body>, tls_port: u16) -> Result<String, Strin
     }
     let mut final_str = format!("https://{}/", domain);
     for (i, val) in uri.split("/").enumerate() {
-        if i >= 2 {
+        if i >= 3 {
             if val != "" {
                 final_str += val;
                 final_str += "/";
