@@ -2,6 +2,7 @@
 
 webinterface_wifi_sha256sum='287a4e7a2665d7c75e5452c02e09943a6d083d645724b119c18e9675ee8f3e61'
 service_file_sha256sum='ba0472927c1ed0f7c201973c32ebcb3dcb6a7186db9a0e9a1466d3308c9f6621'
+config_sha256sum='cffae183b6fb2cc644b2ab2ec9d59fbefbe01b4b65f7ab8074a16feab41fa910'
 
 installfile='./install-webint-wf.sh'
 localbin='/home/root/.local/bin'
@@ -50,7 +51,7 @@ function sha_fail() {
 }
 
 [[ -f $binfile ]] && rm $binfile
-wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0/webinterface-wifi \
+wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0.0/webinterface-wifi \
 	-P $localbin
 
 if ! sha256sum -c <(echo "$webinterface_wifi_sha256sum  $binfile") >/dev/null 2>&1; then
@@ -61,17 +62,21 @@ chmod +x $binfile
 ln -s $binfile $aliasfile
 
 [[ -f $servicefile ]] && rm $servicefile
-wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/webinterface-wifi.service \
+wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0.0/webinterface-wifi.service \
 	-P /lib/systemd/system
 
 if ! sha256sum -c <(echo "$service_file_sha256sum  $servicefile") >/dev/null 2>&1; then
 	sha_fail
 fi
 
-mkdir -p $configdir
 if ! [ -f $configfile ]; then
-	wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/config/config.default.toml \
+	mkdir -p $configdir
+	wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0.0/config.default.toml \
 		-O $configfile
+
+	if ! sha256sum -c <(echo "$config_sha256sum  $configfile") >/dev/null 2>&1; then
+		sha_fail
+	fi
 fi
 
 mkdir -p $ssldir
@@ -79,7 +84,7 @@ mkdir -p $authdir
 mkdir -p $assetsdir
 
 [[ -f $faviconfile ]] && rm $faviconfile
-wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/assets/favicon.ico \
+wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0.0/favicon.ico \
 	-P $assetsdir
 
 systemctl daemon-reload
