@@ -4,6 +4,8 @@ This program will make the ReMarkable Tablet's web interface available on wifi.
 
 Password authentication and SSL supported, along with the ability to only run when connected to certain wifi networks.  
 
+![demo](https://github.com/rM-self-serve/webinterface-wifi/assets/122753594/51263588-0efd-46a0-94fc-5e936cdc7615)
+
 ### Limitations 
 
 Without additional programs, the web interface will only be available over wifi while the device is plugged in and the web interface is enabled/reachable at 10.11.99.1.
