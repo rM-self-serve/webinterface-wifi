@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-webinterface_wifi_sha256sum='31b14c11137f2ad55e6bd04514a64603944e2c1c7de1ccbb2262d4779f50797c'
+webinterface_wifi_sha256sum='287a4e7a2665d7c75e5452c02e09943a6d083d645724b119c18e9675ee8f3e61'
 service_file_sha256sum='ba0472927c1ed0f7c201973c32ebcb3dcb6a7186db9a0e9a1466d3308c9f6621'
 
 installfile='./install-webint-wf.sh'

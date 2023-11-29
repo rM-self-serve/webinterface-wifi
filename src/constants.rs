@@ -41,7 +41,7 @@ Once running, type the wifi ip address into your browser to view the web interfa
 Source+Docs: https://github.com/rM-self-serve/webinterface-wifi
 
 Enable/Use:
-$ systemctl enable --now webinterface-onboot
+$ systemctl enable --now webinterface-wifi
 
 Disable:
-systemctl disable --now webinterface-onboot";
+systemctl disable --now webinterface-wifi";
