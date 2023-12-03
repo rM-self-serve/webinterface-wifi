@@ -1,3 +1,7 @@
+![Static Badge](https://img.shields.io/badge/rMarkable-v3.8-green)
+![rM1: supported](https://img.shields.io/badge/rM1-supported-green)
+![rM2: supported](https://img.shields.io/badge/rM2-supported-green)
+
 # WebInterface-Wifi
 
 This program will make the ReMarkable Tablet's web interface available on wifi. 
