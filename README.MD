@@ -9,18 +9,9 @@ Password authentication and SSL supported, along with the ability to only run wh
 ### Limitations 
 
 Without additional programs, the web interface will only be available over wifi while the device is plugged in and the web interface is enabled/reachable at 10.11.99.1.
+To get around this, use [webinterface-onboot](https://github.com/rM-self-serve/webinterface-onboot).
 
-To get around these limitations, you can use these programs to start the web interface and ensure it is internally accessible.
-
-- https://github.com/rM-self-serve/webinterface-onboot
-
-- https://github.com/rM-self-serve/webinterface-persist-ip
-
-### Mobile Use
-
-Drag and drop does not work on mobile, though it is very simple to add an upload button to circumnavigate this.
-
-- https://github.com/rM-self-serve/upload_button
+Drag and drop does not work well on mobile, though it is simple to add an [upload button to circumnavigate this](https://github.com/rM-self-serve/upload_button).
 
 ---
 
@@ -54,9 +45,7 @@ $ opkg remove webinterface-wifi
 
 `$ systemctl enable --now webinterface-wifi`
 
-To view the web interface, type the remarkable's wifi ip address in the browser. It can be found in the copyrights and licenses tab in the settings.
-
-- Ex : http://10.0.0.10/ 
+To view the web interface, type the remarkable's wifi ip address in the browser. It can be found in the copyrights and licenses tab in the settings. Ex : http://10.0.0.10/ 
 
 ## Security :warning:
 
@@ -70,7 +59,6 @@ Obtain an SSL certificate and the corresponding private key, a self signed cert 
 /home/root/.local/share/webinterface-wifi/ssl/ssl_cert.pem
 # If installed with Toltec
 /opt/etc/webinterface-wifi/ssl/ssl_cert.pem
-
 
 # Private Key default path
 /home/root/.local/share/webinterface-wifi/ssl/ssl_priv.rsa 
