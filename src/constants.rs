@@ -44,4 +44,4 @@ Enable/Use:
 $ systemctl enable --now webinterface-wifi
 
 Disable:
-systemctl disable --now webinterface-wifi";
+$ systemctl disable --now webinterface-wifi";
