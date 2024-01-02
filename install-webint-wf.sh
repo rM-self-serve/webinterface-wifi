@@ -17,6 +17,11 @@ authdir="${sharedir}/auth"
 assetsdir="${sharedir}/assets"
 faviconfile="${assetsdir}/favicon.ico"
 
+wget_path=/home/root/.local/share/rM-self-serve/wget
+wget_remote=http://toltec-dev.org/thirdparty/bin/wget-v1.21.1-1
+wget_checksum=c258140f059d16d24503c62c1fdf747ca843fe4ba8fcd464a6e6bda8c3bbb6b5
+
+
 printf "\nwebinterface-wifi\n"
 printf "View the web interface over wifi\n"
 printf "This program will be installed in %s\n" "${localbin}"
@@ -33,6 +38,24 @@ case "$response" in
 	exit
 	;;
 esac
+
+if [ -f "$wget_path" ] && ! sha256sum -c <(echo "$wget_checksum  $wget_path") > /dev/null 2>&1; then
+    rm "$wget_path"
+fi
+if ! [ -f "$wget_path" ]; then
+    echo "Fetching secure wget"
+    # Download and compare to hash
+    mkdir -p "$(dirname "$wget_path")"
+    if ! wget -q "$wget_remote" --output-document "$wget_path"; then
+        echo "Error: Could not fetch wget, make sure you have a stable Wi-Fi connection"
+        exit 1
+    fi
+fi
+if ! sha256sum -c <(echo "$wget_checksum  $wget_path") > /dev/null 2>&1; then
+    echo "Error: Invalid checksum for the local wget binary"
+    exit 1
+fi
+chmod 755 "$wget_path"
 
 mkdir -p $localbin
 
@@ -51,7 +74,7 @@ function sha_fail() {
 }
 
 [[ -f $binfile ]] && rm $binfile
-wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0.0/webinterface-wifi \
+"$wget_path" https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0.0/webinterface-wifi \
 	-P $localbin
 
 if ! sha256sum -c <(echo "$webinterface_wifi_sha256sum  $binfile") >/dev/null 2>&1; then
@@ -62,7 +85,7 @@ chmod +x $binfile
 ln -s $binfile $aliasfile
 
 [[ -f $servicefile ]] && rm $servicefile
-wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0.0/webinterface-wifi.service \
+"$wget_path" https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0.0/webinterface-wifi.service \
 	-P /lib/systemd/system
 
 if ! sha256sum -c <(echo "$service_file_sha256sum  $servicefile") >/dev/null 2>&1; then
@@ -71,7 +94,7 @@ fi
 
 if ! [ -f $configfile ]; then
 	mkdir -p $configdir
-	wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0.0/config.default.toml \
+	"$wget_path" https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0.0/config.default.toml \
 		-O $configfile
 
 	if ! sha256sum -c <(echo "$config_sha256sum  $configfile") >/dev/null 2>&1; then
@@ -84,7 +107,7 @@ mkdir -p $authdir
 mkdir -p $assetsdir
 
 [[ -f $faviconfile ]] && rm $faviconfile
-wget https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0.0/favicon.ico \
+"$wget_path" https://github.com/rM-self-serve/webinterface-wifi/releases/download/v2.0.0/favicon.ico \
 	-P $assetsdir
 
 systemctl daemon-reload
