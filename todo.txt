@@ -1,5 +1,0 @@
-default password and ssl
-
-find unused toml
-
-check net stat for if server is running
