@@ -1,4 +1,4 @@
-![Static Badge](https://img.shields.io/badge/reMarkable-v3.8-green)
+![Static Badge](https://img.shields.io/badge/reMarkable-v3.9.4-green)
 ![rM1: supported](https://img.shields.io/badge/rM1-supported-green)
 ![rM2: supported](https://img.shields.io/badge/rM2-supported-green)
 
@@ -13,9 +13,9 @@ Password authentication and SSL supported, along with the ability to only run wh
 ### Limitations 
 
 Without additional programs, the web interface will only be available over wifi while the device is plugged in and the web interface is enabled/reachable at 10.11.99.1.
-To get around this, use [webinterface-onboot](https://github.com/rM-self-serve/webinterface-onboot).
+To fix this, use [webinterface-onboot](https://github.com/rM-self-serve/webinterface-onboot).
 
-Drag and drop does not work well on mobile, though it is simple to add an [upload button to circumnavigate this](https://github.com/rM-self-serve/upload_button).
+Drag and drop does not work well on mobile, though it is simple to add an [upload button](https://github.com/rM-self-serve/upload_button).
 
 ---
 
