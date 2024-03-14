@@ -1,4 +1,4 @@
-![Static Badge](https://img.shields.io/badge/reMarkable-v3.9.4-green)
+![Static Badge](https://img.shields.io/badge/reMarkable-v3.10.2-green)
 [![rm1](https://img.shields.io/badge/rM1-supported-green)](https://remarkable.com/store/remarkable)
 [![rm2](https://img.shields.io/badge/rM2-supported-green)](https://remarkable.com/store/remarkable-2)
 [![opkg](https://img.shields.io/badge/OPKG-webinterface--wifi-blue)](https://toltec-dev.org/)
@@ -15,7 +15,7 @@ Password authentication and SSL supported, along with the ability to only run wh
 ### Limitations 
 
 Without additional programs, the web interface will only be available over wifi while the device is plugged in and the web interface is enabled/reachable at 10.11.99.1.
-To fix this, use [webinterface-onboot](https://github.com/rM-self-serve/webinterface-onboot).
+To ensure the web interface is always available, use [webinterface-onboot](https://github.com/rM-self-serve/webinterface-onboot).
 
 Drag and drop does not work well on mobile, though it is simple to add an [upload button](https://github.com/rM-self-serve/upload_button).
 
