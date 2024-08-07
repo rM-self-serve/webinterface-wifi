@@ -77,7 +77,7 @@ fn process(mut conf_core: ConfigCore) -> Option<Config> {
     if let Some(net) = conf_core.undefined_networks.as_mut() {
         net.__name = Some("[undefined_networks]".to_string());
     }
-    
+
     Some(Config {
         auth: conf,
         device: device,

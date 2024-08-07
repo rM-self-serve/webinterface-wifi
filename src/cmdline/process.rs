@@ -36,7 +36,10 @@ pub fn run() -> std::io::Result<()> {
             execute::validate(config_path)?;
         }
 
-        Some(Commands::Reload { config_path, cntrl_port }) => {
+        Some(Commands::Reload {
+            config_path,
+            cntrl_port,
+        }) => {
             configure_log(&None);
             let cntrl_port = cntrl_port.unwrap_or(DEF_CNTRL_PORT);
             let config_path = config_path.as_ref().unwrap();

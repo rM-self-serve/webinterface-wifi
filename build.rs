@@ -42,10 +42,10 @@ fn main() {
     let conf_dir = var("WIW_CONFDIR").unwrap_or(LOCALCONFDIR.to_string());
 
     to_build_env!(
-        data_dir: "DEF_PASS_PATH": "auth/login.pass", 
-        data_dir: "DEF_SSL_CERT_PATH": "ssl/ssl_cert.pem", 
-        data_dir: "DEF_SSL_PRIV_PATH": "ssl/ssl_priv.rsa", 
-        data_dir: "FAVICON_PATH": "assets/favicon.ico", 
-        conf_dir: "DEF_CNFG_PATH": "config.toml", 
+        data_dir: "DEF_PASS_PATH": "auth/login.pass",
+        data_dir: "DEF_SSL_CERT_PATH": "ssl/ssl_cert.pem",
+        data_dir: "DEF_SSL_PRIV_PATH": "ssl/ssl_priv.rsa",
+        data_dir: "FAVICON_PATH": "assets/favicon.ico",
+        conf_dir: "DEF_CNFG_PATH": "config.toml",
     );
 }

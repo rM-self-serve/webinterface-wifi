@@ -4,16 +4,16 @@ use hyper::{
     service::{make_service_fn, service_fn},
     Server,
 };
+use log::error;
 use std::{convert::Infallible, net::SocketAddr};
 use tokio::sync::broadcast;
-use log::error;
 
 pub async fn start_server(
     listen_addr: SocketAddr,
     webint_addr: SocketAddr,
     pass_hash: Option<String>,
     send_kill_srvr: broadcast::Sender<()>,
-    session_key: String
+    session_key: String,
 ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let service = make_service_fn(|conn: &AddrStream| {
         let remote_addr = conn.remote_addr().ip();

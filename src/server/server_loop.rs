@@ -2,7 +2,8 @@ use super::{myhttp, myhttps, structs::SystemState, utils};
 use crate::{
     auth,
     config::{factory::Config, structs::Network},
-    netinfo::{structs::NetInfo, with_config}, constants::DEF_PASS_PATH,
+    constants::DEF_PASS_PATH,
+    netinfo::{structs::NetInfo, with_config},
 };
 use async_recursion::async_recursion;
 use log::{debug, error};
@@ -61,10 +62,8 @@ fn spawn_server(
 ) -> std::io::Result<SrvrThread> {
     let session_key = random_string::generate(16, random_string::charsets::ALPHANUMERIC);
 
-    let webint_addr = utils::string2scktaddr(
-        net_info.webint_ip.to_string(),
-        &config.device.webint_port,
-    )?;
+    let webint_addr =
+        utils::string2scktaddr(net_info.webint_ip.to_string(), &config.device.webint_port)?;
 
     let wlanip = resolve_wlanip(network.listen_ip.as_ref(), net_info.wifi_ntrfc);
     let listen_addr = utils::string2scktaddr(wlanip, network.listen_port.as_ref().unwrap())?;

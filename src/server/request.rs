@@ -2,7 +2,10 @@ use crate::{auth::validate_req, constants::FAVICON_PATH};
 use http::Version;
 use hyper::{Body, Request, Response, StatusCode};
 use log::{debug, error};
-use std::{convert::Infallible, net::{SocketAddr, IpAddr}};
+use std::{
+    convert::Infallible,
+    net::{IpAddr, SocketAddr},
+};
 
 pub async fn handle(
     client_ip: IpAddr,

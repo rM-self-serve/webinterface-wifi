@@ -27,5 +27,3 @@ impl Config {
         };
     }
 }
-
-impl Config {}

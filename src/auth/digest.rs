@@ -1,8 +1,8 @@
+use super::validate_req::nonce_hash;
 use http::HeaderValue;
 use log::debug;
 use sha256::digest;
 use std::{collections::HashMap, net::IpAddr};
-use super::validate_req::nonce_hash;
 
 pub struct AuthDigest {
     nonce: String,
@@ -75,7 +75,7 @@ impl AuthDigest {
             debug!("Could not find opaque in authorization header");
             return None;
         };
-        
+
         Some(AuthDigest {
             nonce: nonce.to_owned(),
             uri: uri.to_owned(),

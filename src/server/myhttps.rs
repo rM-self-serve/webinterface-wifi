@@ -1,5 +1,8 @@
 use super::{request, ssl};
-use crate::{config::structs::{ConfigCont, Network}, constants::{DEF_SSL_CERT_PATH, DEF_SSL_PRIV_PATH}};
+use crate::{
+    config::structs::{ConfigCont, Network},
+    constants::{DEF_SSL_CERT_PATH, DEF_SSL_PRIV_PATH},
+};
 use http::Request;
 use hyper::{
     server::conn::AddrIncoming,
@@ -35,13 +38,7 @@ pub async fn start_server(
     let ssl_cert = auth.ssl_cert_path.as_ref().unwrap_or(&def_ssl_cert);
     let ssl_priv = auth.ssl_priv_path.as_ref().unwrap_or(&def_ssl_priv);
 
-    let acceptor = match ssl::acceptor(
-        ssl_cert,
-        ssl_priv,
-        bind,
-    )
-    .await
-    {
+    let acceptor = match ssl::acceptor(ssl_cert, ssl_priv, bind).await {
         Ok(val) => val,
         Err(err) => {
             let err_str = format!("Error parsing SSL certificates: {}", err);
@@ -50,7 +47,8 @@ pub async fn start_server(
         }
     };
 
-    let mut rdrct_opt: Option<JoinHandle<Result<_, Box<dyn std::error::Error + Send + Sync>>>> = None;
+    let mut rdrct_opt: Option<JoinHandle<Result<_, Box<dyn std::error::Error + Send + Sync>>>> =
+        None;
     if let Some(http_redirect_port) = net.http_redirect_port {
         let send_kill_srvr_clone = send_kill_srvr.clone();
         let listen_addr_clone = listen_addr.clone();
@@ -98,7 +96,6 @@ pub async fn start_server(
         error!("{err_str}");
         return Err(Box::new(err));
     }
-
 
     Ok(())
 }

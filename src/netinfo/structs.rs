@@ -73,10 +73,7 @@ impl NetInfo {
         }
         match webint_ip.as_ref() {
             Some(val) => print_or_dbug(
-                &format!(
-                    "webint ip exists: {}",
-                    val.to_string().bright_blue()
-                ),
+                &format!("webint ip exists: {}", val.to_string().bright_blue()),
                 is_cli,
             ),
             None => {

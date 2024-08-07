@@ -15,11 +15,10 @@ use tokio::{
 };
 use tokio_util::sync::CancellationToken;
 
-
 pub fn time_now() -> Duration {
     SystemTime::now()
-    .duration_since(UNIX_EPOCH)
-    .expect("Time went backwards")
+        .duration_since(UNIX_EPOCH)
+        .expect("Time went backwards")
 }
 
 pub fn conn_hash(net_info: &NetInfo) -> u64 {

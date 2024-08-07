@@ -1,11 +1,11 @@
 use super::utils::time_now;
 use crate::constants::{SIGINT, SIGTERM, SIGUSR1, TCP_BUFFER_SIZE};
 use log::{debug, error, info, warn};
-use tokio::time::sleep;
 use std::io::prelude::*;
 use std::io::{Error, ErrorKind, Result};
 use std::time::Duration;
 use tokio::task::JoinHandle;
+use tokio::time::sleep;
 use tokio::{
     net::TcpStream,
     signal::unix::{signal, SignalKind},
@@ -68,7 +68,7 @@ pub fn cntrl_lstnr(
                 if error_count >= 5 {
                     return Err(err);
                 }
-                
+
                 sleep(Duration::from_secs(10)).await;
                 continue;
             };
