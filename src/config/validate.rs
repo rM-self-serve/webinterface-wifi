@@ -191,14 +191,14 @@ pub fn network(
         warn!("The field 'ssl' in {name} == false but 'http_redirect_port' is set.");
     }
 
-    if network.listen_port.is_none() {
-        error!("Missing 'listen_port' in {name} field.");
-        success = false;
-    };
-
     if network.__name.is_some() {
         error!("The field '__name' in {name} is private.");
         success = false;
+    };
+
+    let Some(listen_port) = network.listen_port.as_ref() else {
+        error!("Missing 'listen_port' in {name} field.");
+        return false;
     };
 
     let Some(listen_ip) = network.listen_ip.as_ref() else {
@@ -207,9 +207,14 @@ pub fn network(
     };
 
     if listen_ip != "auto" && listen_ip.parse::<IpAddr>().is_err() {
-            error!("Invalid 'listen_ip' in {name} field.");
-            return false;
+        error!("Invalid 'listen_ip' in {name} field.");
+        return false;
     }
+
+    if listen_ip == "0.0.0.0" && *listen_port == 80 {
+        error!("Can not run server on 0.0.0.0:80 in {name} field.");
+        success = false;
+    };
 
     success
 }
