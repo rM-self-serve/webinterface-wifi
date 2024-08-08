@@ -3,10 +3,11 @@
 [![rm2](https://img.shields.io/badge/rM2-supported-green)](https://remarkable.com/store/remarkable-2)
 [![opkg](https://img.shields.io/badge/OPKG-webinterface--wifi-blue)](https://toltec-dev.org/)
 [![Discord](https://img.shields.io/discord/385916768696139794.svg?label=reMarkable&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/ATqQGfu)
+![Build Release](https://github.com/rM-self-serve/webinterface-wifi/actions/workflows/build-release.yml/badge.svg)
 
 # WebInterface-Wifi
 
-This program will make the ReMarkable Tablet's web interface available on wifi. 
+This program will make the ReMarkable Tablet's [USB Web Interface](https://remarkable.guide/tech/usb-web-interface.html) available on wifi. 
 
 Password authentication and SSL supported, along with the ability to only run when connected to certain wifi networks.  
 
@@ -14,8 +15,8 @@ Password authentication and SSL supported, along with the ability to only run wh
 
 ### Limitations 
 
-Without additional programs, the web interface will only be available over wifi while the device is plugged in and the web interface is enabled/reachable at 10.11.99.1.
-To ensure the web interface is always available, use [webinterface-onboot](https://github.com/rM-self-serve/webinterface-onboot).
+Without additional programs, the USB Web Interface will only be available over wifi while the device is plugged in and the USB Web Interface is enabled/reachable at 10.11.99.1.
+To ensure the USB Web Interface is always available, use [webinterface-onboot](https://github.com/rM-self-serve/webinterface-onboot).
 
 Drag and drop does not work well on mobile, though it is simple to add an [upload button](https://github.com/rM-self-serve/upload_button).
 
@@ -39,11 +40,11 @@ $ opkg remove webinterface-wifi
 
 #### Install
 
-```$ wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/install-webint-wf.sh && bash install-webint-wf.sh```
+```$ wget https://github.com/rM-self-serve/webinterface-wifi/releases/latest/download/install-webint-wf.sh && bash install-webint-wf.sh```
 
 #### Remove
 
-```$ wget https://raw.githubusercontent.com/rM-self-serve/webinterface-wifi/master/remove-webint-wf.sh && bash remove-webint-wf.sh```
+```$ wget https://github.com/rM-self-serve/webinterface-wifi/releases/latest/download/install-webint-wf.sh && bash install-webint-wf.sh remove```
 
 ## Usage
 
@@ -51,11 +52,11 @@ $ opkg remove webinterface-wifi
 
 `$ systemctl enable --now webinterface-wifi`
 
-To view the web interface, type the remarkable's wifi ip address in the browser. It can be found in the copyrights and licenses tab in the settings. Ex : http://10.0.0.10/ 
+To view the USB Web Interface, type the remarkable's wifi ip address in the browser. It can be found in the copyrights and licenses tab in the settings. Ex : http://10.0.0.10/ 
 
 ## Security :warning:
 
-**By default, the web interface runs without authentication or encryption.** This means anyone on the same wifi network can access your files. The only way to secure your device on public wifi is by enabling both authentication and encryption.
+**By default, the USB Web Interface runs without authentication or encryption.** This means anyone on the same wifi network can access your files. The only way to secure your device on public wifi is by enabling both authentication and encryption.
 
 ### SSL/Network Encryption
 Obtain an SSL certificate and the corresponding private key, a self signed cert is sufficient. These can be placed at the following paths:

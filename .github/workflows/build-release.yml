@@ -1,0 +1,61 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Trigger this workflow only for version tags (e.g., v1.0.0)
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v3
+
+    - name: Pull Docker image
+      run: |
+        docker pull ghcr.io/toltec-dev/rust:v3.1
+
+    - name: Build project
+      run: |
+        docker run --rm -v "${{ github.workspace }}:/workspace" -w /workspace ghcr.io/toltec-dev/rust:v3.1 cargo build --release
+
+    - name: Populate install file
+      run: |
+        tag=$(echo $GITHUB_REF | sed 's/refs\/tags\///')
+        sed -i "s/VERSION/$tag/g" install-webint-wf.sh
+        webinterface_wifi_sha256sum=$(sha256sum target/armv7-unknown-linux-gnueabihf/release/webinterface-wifi | cut -d ' ' -f 1)
+        service_file_sha256sum=$(sha256sum webinterface-wifi.service | cut -d ' ' -f 1)
+        config_sha256sum=$(sha256sum config/config.default.toml | cut -d ' ' -f 1)
+        sed -i "s/WEBINTERFACE_WIFI_SHA256SUM/$webinterface_wifi_sha256sum/g" install-webint-wf.sh
+        sed -i "s/SERVICE_FILE_SHA256SUM/$service_file_sha256sum/g" install-webint-wf.sh
+        sed -i "s/CONFIG_SHA256SUM/$config_sha256sum/g" install-webint-wf.sh
+
+    - name: Get tag message
+      run: |
+        tag=$(echo $GITHUB_REF | sed 's/refs\/tags\///')
+        # manually fetch the tag, otherwise commit message is found
+        git fetch --depth=1 origin +refs/tags/"$tag":refs/tags/"$tag"
+        message=$(git tag -l "$tag" --format '%(contents)')
+        echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+        echo "$message" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+
+    - name: Upload release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          target/armv7-unknown-linux-gnueabihf/release/webinterface-wifi
+          webinterface-wifi.service
+          assets/favicon.ico
+          config/config.default.toml
+          install-webint-wf.sh
+        body: ${{ env.RELEASE_NOTES }}
+
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
