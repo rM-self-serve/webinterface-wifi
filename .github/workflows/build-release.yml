@@ -13,27 +13,37 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Docker
-      uses: docker/setup-buildx-action@v3
+    - name: Install Toolchain
+      uses: actions-rust-lang/setup-rust-toolchain@v1
 
-    - name: Pull Docker image
+    - name: Install cross
       run: |
-        docker pull ghcr.io/toltec-dev/rust:v3.1
+        cargo install cross
 
-    - name: Build project
+    - name: Build for aarch64
       run: |
-        docker run --rm -v "${{ github.workspace }}:/workspace" -w /workspace ghcr.io/toltec-dev/rust:v3.1 cargo build --release
+        cross build --target aarch64-unknown-linux-gnu --release
+        mv target/aarch64-unknown-linux-gnu/release/webinterface-wifi webinterface-wifi-arm64
+
+    - name: Build for armv7
+      run: |
+        cross build --target armv7-unknown-linux-gnueabihf --release
+        mv target/armv7-unknown-linux-gnueabihf/release/webinterface-wifi webinterface-wifi-arm32
 
     - name: Populate install file
       run: |
+        repo_name="${{ github.event.repository.name }}"
         tag=$(echo $GITHUB_REF | sed 's/refs\/tags\///')
-        sed -i "s/VERSION/$tag/g" install-webint-wf.sh
-        webinterface_wifi_sha256sum=$(sha256sum target/armv7-unknown-linux-gnueabihf/release/webinterface-wifi | cut -d ' ' -f 1)
+        webinterface_wifi64_sha256sum=$(sha256sum webinterface-wifi-arm64 | cut -d ' ' -f 1)
+        webinterface_wifi32_sha256sum=$(sha256sum webinterface-wifi-arm32 | cut -d ' ' -f 1)
         service_file_sha256sum=$(sha256sum webinterface-wifi.service | cut -d ' ' -f 1)
         config_sha256sum=$(sha256sum config/config.default.toml | cut -d ' ' -f 1)
-        sed -i "s/WEBINTERFACE_WIFI_SHA256SUM/$webinterface_wifi_sha256sum/g" install-webint-wf.sh
+        sed -i "s/VERSION/$tag/g" install-webint-wf.sh
+        sed -i "s/WEBINTERFACE_WIFI64_SHA256SUM/$webinterface_wifi64_sha256sum/g" install-webint-wf.sh
+        sed -i "s/WEBINTERFACE_WIFI32_SHA256SUM/$webinterface_wifi32_sha256sum/g" install-webint-wf.sh
         sed -i "s/SERVICE_FILE_SHA256SUM/$service_file_sha256sum/g" install-webint-wf.sh
         sed -i "s/CONFIG_SHA256SUM/$config_sha256sum/g" install-webint-wf.sh
+        sed -i "s/REPO_NAME/$repo_name/g" install-webint-wf.sh
 
     - name: Get tag message
       run: |
@@ -49,7 +59,8 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          target/armv7-unknown-linux-gnueabihf/release/webinterface-wifi
+          webinterface-wifi-arm32
+          webinterface-wifi-arm64
           webinterface-wifi.service
           assets/favicon.ico
           config/config.default.toml

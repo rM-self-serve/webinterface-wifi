@@ -2,9 +2,11 @@
 
 # --- Values replaced in github actions ---
 version='VERSION'
-webinterface_wifi_sha256sum='WEBINTERFACE_WIFI_SHA256SUM'
+webinterface_wifi64_sha256sum='WEBINTERFACE_WIFI64_SHA256SUM'
+webinterface_wifi32_sha256sum='WEBINTERFACE_WIFI32_SHA256SUM'
 service_file_sha256sum='SERVICE_FILE_SHA256SUM'
 config_sha256sum='CONFIG_SHA256SUM'
+repo_name='REPO_NAME'
 # -----------------------------------------
 
 pkgname='webinterface-wifi'
@@ -21,10 +23,20 @@ authdir="${sharedir}/auth"
 assetsdir="${sharedir}/assets"
 faviconfile="${assetsdir}/favicon.ico"
 
-wget_path=/home/root/.local/share/rM-self-serve/wget
-wget_remote=http://toltec-dev.org/thirdparty/bin/wget-v1.21.1-1
-wget_checksum=c258140f059d16d24503c62c1fdf747ca843fe4ba8fcd464a6e6bda8c3bbb6b5
-
+platform=$(uname -m)
+# toltec does not yet have a statically compiled wget for arm64
+# so a golang alternitive, wgot, is used in the meantime
+# the binary is built at https://github.com/rM-self-serve/wgot/releases
+# feel free to compare checksums
+if [[ "$platform" == "aarch64" ]]; then
+	wget_path=/home/root/.local/share/rM-self-serve/wgot
+	wget_remote=http://johnrigoni.me/rM-self-serve/wgot
+	wget_checksum=cbd01dd3d97dfde6d0fb8195a3e75169b91f15e4781f7f3b03847e2b6d387013
+else
+	wget_path=/home/root/.local/share/rM-self-serve/wget
+	wget_remote=http://toltec-dev.org/thirdparty/bin/wget-v1.21.1-1
+	wget_checksum=c258140f059d16d24503c62c1fdf747ca843fe4ba8fcd464a6e6bda8c3bbb6b5
+fi
 
 main() {
 	case "$@" in
@@ -60,6 +72,20 @@ sha_fail() {
 	exit
 }
 
+download_file() {
+	if [[ "$platform" == "aarch64" ]]; then
+		"$wget_path" -o "$1" "$2"
+	else
+		"$wget_path" -O "$1" "$2"
+	fi
+}
+
+sha_check() {
+	if ! sha256sum -c <(echo "$1  $2") >/dev/null 2>&1; then
+		sha_fail
+	fi
+}
+
 install() {
 	printf "\n${pkgname}\n"
 	printf "View the web interface over wifi\n"
@@ -80,6 +106,7 @@ install() {
 	fi
 	if ! sha256sum -c <(echo "$wget_checksum  $wget_path") > /dev/null 2>&1; then
 	    echo "Error: Invalid checksum for the local wget binary"
+	    rm "$wget_path"
 	    exit 1
 	fi
 	chmod 755 "$wget_path"
@@ -93,32 +120,31 @@ install() {
 
 
 	[[ -f $binfile ]] && rm $binfile
-	"$wget_path" https://github.com/rM-self-serve/${pkgname}/releases/download/${version}/${pkgname} \
-		-P $localbin
-
-	if ! sha256sum -c <(echo "$webinterface_wifi_sha256sum  $binfile") >/dev/null 2>&1; then
-		sha_fail
+	if [[ "$platform" == "aarch64" ]]; then
+		download_file "$binfile" \
+			"https://github.com/rM-self-serve/${repo_name}/releases/download/${version}/${pkgname}-arm64"
+		sha_check $webinterface_wifi64_sha256sum $binfile
+	else
+		download_file "$binfile" \
+			"https://github.com/rM-self-serve/${repo_name}/releases/download/${version}/${pkgname}-arm32"
+		sha_check $webinterface_wifi32_sha256sum $binfile
 	fi
 
 	chmod +x $binfile
 	ln -s $binfile $aliasfile
 
 	[[ -f $servicefile ]] && rm $servicefile
-	"$wget_path" https://github.com/rM-self-serve/${pkgname}/releases/download/${version}/${pkgname}.service \
-		-P /lib/systemd/system
+	download_file "$servicefile" \
+		"https://github.com/rM-self-serve/${repo_name}/releases/download/${version}/${pkgname}.service"	
 
-	if ! sha256sum -c <(echo "$service_file_sha256sum  $servicefile") >/dev/null 2>&1; then
-		sha_fail
-	fi
+	sha_check "$service_file_sha256sum" "$servicefile"
 
 	if ! [ -f $configfile ]; then
 		mkdir -p $configdir
-		"$wget_path" https://github.com/rM-self-serve/${pkgname}/releases/download/${version}/config.default.toml \
-			-O $configfile
-
-		if ! sha256sum -c <(echo "$config_sha256sum  $configfile") >/dev/null 2>&1; then
-			sha_fail
-		fi
+		download_file "$configfile" \
+			"https://github.com/rM-self-serve/${repo_name}/releases/download/${version}/config.default.toml"
+		
+		sha_check "$config_sha256sum" "$configfile"
 	fi
 
 	mkdir -p $ssldir
@@ -126,8 +152,8 @@ install() {
 	mkdir -p $assetsdir
 
 	[[ -f $faviconfile ]] && rm $faviconfile
-	"$wget_path" https://github.com/rM-self-serve/${pkgname}/releases/download/${version}/favicon.ico \
-		-P $assetsdir
+	download_file "favicon.ico" \
+		"https://github.com/rM-self-serve/${repo_name}/releases/download/${version}/favicon.ico"	
 
 	systemctl daemon-reload
 
