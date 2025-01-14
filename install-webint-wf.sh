@@ -25,13 +25,13 @@ faviconfile="${assetsdir}/favicon.ico"
 
 platform=$(uname -m)
 # toltec does not yet have a statically compiled wget for arm64
-# so a golang alternitive, wgot, is used in the meantime
-# the binary is built at https://github.com/rM-self-serve/wgot/releases
-# feel free to compare checksums
+# so a golang alternitive, gowget, is used in the meantime
+# the binary is built at https://github.com/rM-self-serve/gowget/releases
+# and is proxied through http://johnrigoni.me/rM-self-serve, feel free to compare checksums
 if [[ "$platform" == "aarch64" ]]; then
-	wget_path=/home/root/.local/share/rM-self-serve/wgot
-	wget_remote=http://johnrigoni.me/rM-self-serve/wgot
-	wget_checksum=cbd01dd3d97dfde6d0fb8195a3e75169b91f15e4781f7f3b03847e2b6d387013
+	wget_path=/home/root/.local/share/rM-self-serve/gowget
+	wget_remote=http://johnrigoni.me/rM-self-serve/gowget/releases/download/1.1.6/gowget-1.1.6
+	wget_checksum=eb69c800f1ef32b49b7fd2e1fd2dc6da855694f9ae399dbb3e881c81a0bfbda5
 else
 	wget_path=/home/root/.local/share/rM-self-serve/wget
 	wget_remote=http://toltec-dev.org/thirdparty/bin/wget-v1.21.1-1
@@ -70,14 +70,6 @@ sha_fail() {
 	[[ -f $installfile ]] && rm $installfile
 	[[ -f $servicefile ]] && rm $servicefile
 	exit
-}
-
-download_file() {
-	if [[ "$platform" == "aarch64" ]]; then
-		"$wget_path" -o "$1" "$2"
-	else
-		"$wget_path" -O "$1" "$2"
-	fi
 }
 
 sha_check() {
@@ -121,11 +113,11 @@ install() {
 
 	[[ -f $binfile ]] && rm $binfile
 	if [[ "$platform" == "aarch64" ]]; then
-		download_file "$binfile" \
+		"$wget_path" -O "$binfile" \
 			"https://github.com/rM-self-serve/${repo_name}/releases/download/${version}/${pkgname}-arm64"
 		sha_check $webinterface_wifi64_sha256sum $binfile
 	else
-		download_file "$binfile" \
+		"$wget_path" -O "$binfile" \
 			"https://github.com/rM-self-serve/${repo_name}/releases/download/${version}/${pkgname}-arm32"
 		sha_check $webinterface_wifi32_sha256sum $binfile
 	fi
@@ -134,14 +126,14 @@ install() {
 	ln -s $binfile $aliasfile
 
 	[[ -f $servicefile ]] && rm $servicefile
-	download_file "$servicefile" \
+	"$wget_path" -O "$servicefile" \
 		"https://github.com/rM-self-serve/${repo_name}/releases/download/${version}/${pkgname}.service"	
 
 	sha_check "$service_file_sha256sum" "$servicefile"
 
 	if ! [ -f $configfile ]; then
 		mkdir -p $configdir
-		download_file "$configfile" \
+		"$wget_path" -O "$configfile" \
 			"https://github.com/rM-self-serve/${repo_name}/releases/download/${version}/config.default.toml"
 		
 		sha_check "$config_sha256sum" "$configfile"
@@ -152,7 +144,7 @@ install() {
 	mkdir -p $assetsdir
 
 	[[ -f $faviconfile ]] && rm $faviconfile
-	download_file "favicon.ico" \
+	"$wget_path" -O "favicon.ico" \
 		"https://github.com/rM-self-serve/${repo_name}/releases/download/${version}/favicon.ico"	
 
 	systemctl daemon-reload

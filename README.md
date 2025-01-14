@@ -1,6 +1,7 @@
 ![Static Badge](https://img.shields.io/badge/reMarkable-v3.13-green)
 [![rm1](https://img.shields.io/badge/rM1-supported-green)](https://remarkable.com/store/remarkable)
 [![rm2](https://img.shields.io/badge/rM2-supported-green)](https://remarkable.com/store/remarkable-2)
+[![rmpp](https://img.shields.io/badge/rMpp-supported-green)](https://remarkable.com/store/overview/remarkable-paper-pro)
 [![opkg](https://img.shields.io/badge/OPKG-webinterface--wifi-blue)](https://toltec-dev.org/)
 [![Discord](https://img.shields.io/discord/385916768696139794.svg?label=reMarkable&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/ATqQGfu)
 ![Build Release](https://github.com/rM-self-serve/webinterface-wifi/actions/workflows/build-release.yml/badge.svg)
@@ -38,13 +39,19 @@ $ opkg remove webinterface-wifi
 
 ### No toltec
 
+> The Remarkable Tablet's default wget binary does not
+impliment TLS certificate validation (https) so the installation process is
+carried out through a proxy hosted at http://johnrigoni.me/rM-self-serve
+pointed at https://github.com/rM-self-serve, feel free to compare checksums
+or alternatively follow the more involved installation at the bottom of the page
+
 #### Install
 
-```$ wget https://github.com/rM-self-serve/webinterface-wifi/releases/latest/download/install-webint-wf.sh && bash install-webint-wf.sh```
+```$ wget http://johnrigoni.me/rM-self-serve/webinterface-wifi/releases/latest/download/install-webint-wf.sh && bash install-webint-wf.sh```
 
 #### Remove
 
-```$ wget https://github.com/rM-self-serve/webinterface-wifi/releases/latest/download/install-webint-wf.sh && bash install-webint-wf.sh remove```
+```$ wget http://johnrigoni.me/rM-self-serve/webinterface-wifi/releases/latest/download/install-webint-wf.sh && bash install-webint-wf.sh remove```
 
 ## Usage
 
@@ -253,17 +260,24 @@ For more information on the config see the spec and examples in the config folde
 ## Incompatibilities
 - Password authentication on Safari
 
-## Manual install
+## Proxyless Install
 
-You will need docker/podman, cargo, and the cargo crate named cross. There are other ways to cross compile for 32 bit arm as well.
+If you dont want to use the http://johnrigoni.me/rM-self-serve proxy
+but still want to use the install script, you can follow the steps below.
 
-`cross build --target armv7-unknown-linux-gnueabihf --release`
+1. Download the [install file](https://github.com/rM-self-serve/webinterface-wifi/releases/latest/download/install-webint-wf.sh)
+and copy it to the device.
 
-Then copy the binary 'target/armv7-unknown-linux-gnueabihf/release/webinterface-wifi' to the device and enable/start it as a systemd service.
+2. Download a wget/gowget binary and copy it onto the device in a folder named ~/.local/share/rM-self-serve/
+- rM1/rM2: [wget](https://toltec-dev.org/thirdparty/bin/)
+- rMpp: [gowget](https://github.com/rM-self-serve/gowget/releases)
+- Ensure the version/sha256sum of the binary is the same as in the install script
+
+3. On the device, run `bash install-webint-wf.sh`
 
 ## How Does it Work?
 
-This program will start a reverse proxy on the wifi interface on the port specified. The proxy will start/stop based on if webinterface has the configured ip address and the wifi interface has an ip address. It will automatically be available whenever you connect to a new wifi network. 
+This program will start a reverse proxy on the wifi interface on the port specified. The proxy will start/stop based on if webinterface has the configured ip address and the wifi interface has an ip address. 
 
 ![mobile_web_ui](https://github.com/rM-self-serve/webinterface-wifi/assets/122753594/981f3367-653e-40db-b389-703a046a4362)
 
