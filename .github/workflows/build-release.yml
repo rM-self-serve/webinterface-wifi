@@ -44,6 +44,16 @@ jobs:
         sed -i "s/SERVICE_FILE_SHA256SUM/$service_file_sha256sum/g" install-webint-wf.sh
         sed -i "s/CONFIG_SHA256SUM/$config_sha256sum/g" install-webint-wf.sh
         sed -i "s/REPO_NAME/$repo_name/g" install-webint-wf.sh
+        wget -q -O gowget https://github.com/rM-self-serve/gowget/releases/download/1.1.6/gowget-1.1.6
+        gowget_checksum=eb69c800f1ef32b49b7fd2e1fd2dc6da855694f9ae399dbb3e881c81a0bfbda5
+        sha256sum -c <(echo "$gowget_checksum gowget") >/dev/null 2>&1
+        wget -q -O wget http://toltec-dev.org/thirdparty/bin/wget-v1.21.1-1
+        wget_checksum=c258140f059d16d24503c62c1fdf747ca843fe4ba8fcd464a6e6bda8c3bbb6b5
+        sha256sum -c <(echo "$wget_checksum wget") >/dev/null 2>&1
+        sed -i "s/GOWGET_CHECKSUM/$gowget_checksum/g" install-webint-wf.sh
+        sed -i "s/WGET_CHECKSUM/$wget_checksum/g" install-webint-wf.sh
+        echo "__PAYLOAD__" >> install-webint-wf.sh
+        tar -czf - gowget wget >> install-webint-wf.sh
 
     - name: Get tag message
       run: |

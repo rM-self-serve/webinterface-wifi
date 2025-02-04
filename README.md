@@ -19,7 +19,7 @@ Password authentication and SSL supported, along with the ability to only run wh
 Without additional programs, the USB Web Interface will only be available over wifi while the device is plugged in and the USB Web Interface is enabled/reachable at 10.11.99.1.
 To ensure the USB Web Interface is always available, use [webinterface-onboot](https://github.com/rM-self-serve/webinterface-onboot).
 
-Drag and drop does not work well on mobile, though it is simple to add an [upload button](https://github.com/rM-self-serve/upload_button).
+Drag and drop does not work well on mobile for v3.11 and under, though it is simple to add an [upload button](https://github.com/rM-self-serve/upload_button).
 
 ---
 
@@ -40,18 +40,26 @@ $ opkg remove webinterface-wifi
 ### No toltec
 
 > The Remarkable Tablet's default wget binary does not
-impliment TLS certificate validation (https) so the installation process is
-carried out through a proxy hosted at http://johnrigoni.me/rM-self-serve
+implement TLS certificate validation (https) so the installation process is
+initiated through a proxy hosted at http://johnrigoni.me/rM-self-serve
 pointed at https://github.com/rM-self-serve, feel free to compare checksums
-or alternatively follow the more involved installation at the bottom of the page
+or manually copy the install file to the device.
 
 #### Install
 
-```$ wget http://johnrigoni.me/rM-self-serve/webinterface-wifi/releases/latest/download/install-webint-wf.sh && bash install-webint-wf.sh```
+```$ wget http://johnrigoni.me/rM-self-serve/webinterface-wifi/install-webint-wf.sh && bash install-webint-wf.sh```
+
+Or [manually transfer](https://remarkable.guide/guide/access/file-transfer.html) the [install file](https://github.com/rM-self-serve/webinterface-wifi/releases/latest/download/install-webint-wf.sh) to the device and run:
+
+```$ bash install-webint-wf.sh```
 
 #### Remove
 
-```$ wget http://johnrigoni.me/rM-self-serve/webinterface-wifi/releases/latest/download/install-webint-wf.sh && bash install-webint-wf.sh remove```
+```$ wget http://johnrigoni.me/rM-self-serve/webinterface-wifi/install-webint-wf.sh && bash install-webint-wf.sh remove```
+
+Or [manually transfer](https://remarkable.guide/guide/access/file-transfer.html) the [install file](https://github.com/rM-self-serve/webinterface-wifi/releases/latest/download/install-webint-wf.sh) to the device and run:
+
+```$ bash install-webint-wf.sh remove```
 
 ## Usage
 
@@ -259,21 +267,6 @@ For more information on the config see the spec and examples in the config folde
 
 ## Incompatibilities
 - Password authentication on Safari
-
-## Proxyless Install
-
-If you dont want to use the http://johnrigoni.me/rM-self-serve proxy
-but still want to use the install script, you can follow the steps below.
-
-1. Download the [install file](https://github.com/rM-self-serve/webinterface-wifi/releases/latest/download/install-webint-wf.sh)
-and copy it to the device.
-
-2. Download a wget/gowget binary and copy it onto the device in a folder named ~/.local/share/rM-self-serve/
-- rM1/rM2: [wget](https://toltec-dev.org/thirdparty/bin/)
-- rMpp: [gowget](https://github.com/rM-self-serve/gowget/releases)
-- Ensure the version/sha256sum of the binary is the same as in the install script
-
-3. On the device, run `bash install-webint-wf.sh`
 
 ## How Does it Work?
 

@@ -7,6 +7,8 @@ webinterface_wifi32_sha256sum='WEBINTERFACE_WIFI32_SHA256SUM'
 service_file_sha256sum='SERVICE_FILE_SHA256SUM'
 config_sha256sum='CONFIG_SHA256SUM'
 repo_name='REPO_NAME'
+gowget_checksum='GOWGET_CHECKSUM'
+wget_checksum='WGET_CHECKSUM'
 # -----------------------------------------
 
 pkgname='webinterface-wifi'
@@ -24,19 +26,6 @@ assetsdir="${sharedir}/assets"
 faviconfile="${assetsdir}/favicon.ico"
 
 platform=$(uname -m)
-# toltec does not yet have a statically compiled wget for arm64
-# so a golang alternitive, gowget, is used in the meantime
-# the binary is built at https://github.com/rM-self-serve/gowget/releases
-# and is proxied through http://johnrigoni.me/rM-self-serve, feel free to compare checksums
-if [[ "$platform" == "aarch64" ]]; then
-	wget_path=/home/root/.local/share/rM-self-serve/gowget
-	wget_remote=http://johnrigoni.me/rM-self-serve/gowget/releases/download/1.1.6/gowget-1.1.6
-	wget_checksum=eb69c800f1ef32b49b7fd2e1fd2dc6da855694f9ae399dbb3e881c81a0bfbda5
-else
-	wget_path=/home/root/.local/share/rM-self-serve/wget
-	wget_remote=http://toltec-dev.org/thirdparty/bin/wget-v1.21.1-1
-	wget_checksum=c258140f059d16d24503c62c1fdf747ca843fe4ba8fcd464a6e6bda8c3bbb6b5
-fi
 
 main() {
 	case "$@" in
@@ -62,20 +51,30 @@ cli_info() {
 	echo ''
 }
 
-
-sha_fail() {
-	echo "sha256sum did not pass, error downloading ${pkgname}"
-	echo "Exiting installer and removing installed files"
-	[[ -f $binfile ]] && rm $binfile
-	[[ -f $installfile ]] && rm $installfile
-	[[ -f $servicefile ]] && rm $servicefile
-	exit
-}
-
 sha_check() {
 	if ! sha256sum -c <(echo "$1  $2") >/dev/null 2>&1; then
-		sha_fail
+		echo "$2 sha256sum did not pass, error downloading ${pkgname}"
+		echo "Exiting installer and removing installed files"
+		[[ -f $binfile ]] && rm $binfile
+		[[ -f $servicefile ]] && rm $servicefile
+		[[ -f $wget_path ]] && rm $wget_path
+		exit 1
 	fi
+}
+
+extract_downloader() {
+	wget_path="/tmp/downloader-$version"
+	[[ -f "$wget_path" ]] && rm "$wget_path"
+	PAYLOAD_LINE=$(awk '/^__PAYLOAD__/ { print NR + 1; exit 0; }' $0)
+
+	if [[ "$platform" == "aarch64" ]]; then
+		tail -n +$PAYLOAD_LINE $0 | tar -xzf - gowget -O > "$wget_path" 
+		sha_check "$gowget_checksum" "$wget_path"
+	else
+		tail -n +$PAYLOAD_LINE $0 | tar -xzf - wget -O > "$wget_path" 
+		sha_check "$wget_checksum" "$wget_path"
+	fi
+	chmod 755 "$wget_path"
 }
 
 install() {
@@ -84,27 +83,9 @@ install() {
 	printf "This program will be installed in %s\n" "${localbin}"
 	printf "%s will be added to the path in ~/.bashrc if necessary\n" "${localbin}"
 
-	if [ -f "$wget_path" ] && ! sha256sum -c <(echo "$wget_checksum  $wget_path") > /dev/null 2>&1; then
-	    rm "$wget_path"
-	fi
-	if ! [ -f "$wget_path" ]; then
-	    echo "Fetching secure wget"
-	    # Download and compare to hash
-	    mkdir -p "$(dirname "$wget_path")"
-	    if ! wget -q "$wget_remote" --output-document "$wget_path"; then
-		echo "Error: Could not fetch wget, make sure you have a stable Wi-Fi connection"
-		exit 1
-	    fi
-	fi
-	if ! sha256sum -c <(echo "$wget_checksum  $wget_path") > /dev/null 2>&1; then
-	    echo "Error: Invalid checksum for the local wget binary"
-	    rm "$wget_path"
-	    exit 1
-	fi
-	chmod 755 "$wget_path"
+	extract_downloader
 
 	mkdir -p $localbin
-
 	case :$PATH: in
 	*:$localbin:*) ;;
 	*) echo "PATH=\"${localbin}:\$PATH\"" >>/home/root/.bashrc ;;
@@ -153,6 +134,7 @@ install() {
 	printf "Run the following command to use ${pkgname}\n"
 	printf "systemctl enable ${pkgname} --now\n\n"
 
+	[[ -f $wget_path ]] && rm $wget_path
 	[[ -f $installfile ]] && rm $installfile
 }
 
@@ -182,3 +164,4 @@ remove() {
 }
 
 main "$@"
+exit 0
